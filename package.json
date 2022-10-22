@@ -8,11 +8,13 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "svg:transform": "./node_modules/@svgr/cli/bin/svgr --native --ignore-existing --typescript --no-dimensions -d src/assets/svgs/ src/assets/svgs/origin",
     "clean-project": "npx react-native-clean-project --remove-iOS-build --remove-iOS-pods",
     "clean:android": "cd android && ./gradlew clean && cd ..",
     "install:pods": "cd ios && pod install && cd .."
   },
   "dependencies": {
+    "babel-plugin-module-resolver": "^4.1.0",
     "react": "18.1.0",
     "react-native": "0.70.3",
     "react-native-safe-area-context": "^4.4.1"

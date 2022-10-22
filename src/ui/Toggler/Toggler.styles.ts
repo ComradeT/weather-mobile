@@ -23,6 +23,9 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 6,
     borderBottomRightRadius: 6,
   },
+  text: {
+    fontSize: 18,
+  },
   degree: {
     position: 'absolute',
     top: 0,

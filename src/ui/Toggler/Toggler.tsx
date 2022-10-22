@@ -25,12 +25,12 @@ const Toggler: FC<TogglerProps> = ({ onActiveFahrenheit, onActiveСelsius, activ
       <TouchableOpacity
         onPress={onActiveСelsius}
         style={[styles.button, styles.celButton, { backgroundColor: getBackgroundColor(TempEnum.CEL) }]}>
-        <Text style={{ color: getColor(TempEnum.CEL) }}>C</Text>
+        <Text style={[styles.text, { color: getColor(TempEnum.CEL) }]}>C</Text>
       </TouchableOpacity>
       <TouchableOpacity
         onPress={onActiveFahrenheit}
         style={[styles.button, styles.fahrButton, { backgroundColor: getBackgroundColor(TempEnum.FAHR) }]}>
-        <Text style={{ color: getColor(TempEnum.FAHR) }}>F</Text>
+        <Text style={[styles.text, { color: getColor(TempEnum.FAHR) }]}>F</Text>
       </TouchableOpacity>
 
       <View style={styles.degree}>
