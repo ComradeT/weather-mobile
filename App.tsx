@@ -1,34 +1,44 @@
-import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { DefaultLayout } from './src/layouts';
+import colors from './src/styles/themes/light';
+import { TempEnum } from './src/types';
+
+import { Toggler } from './src/ui';
 
 const App = () => {
+  const [activeTab, setActiveTab] = useState<TempEnum>(TempEnum.CEL);
+
+  const onActiveСelsius = () => setActiveTab(TempEnum.CEL);
+  const onActiveFahrenheit = () => setActiveTab(TempEnum.FAHR);
+
   return (
     <SafeAreaProvider>
       <DefaultLayout>
-        <Text>sdfsdfsdf</Text>
+        <View style={styles.topRow}>
+          <Text style={styles.cityTitle}>Омск</Text>
+          <Toggler
+            activeTab={activeTab}
+            onActiveСelsius={onActiveСelsius}
+            onActiveFahrenheit={onActiveFahrenheit}
+          />
+        </View>
       </DefaultLayout>
     </SafeAreaProvider>
   );
 };
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  topRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
-  sectionTitle: {
-    fontSize: 24,
+  cityTitle: {
+    fontSize: 30,
     fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
+    color: colors.white,
   },
 });
 
