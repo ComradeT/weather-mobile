@@ -21,6 +21,10 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 18,
   },
+  tempBlock: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   cityTitle: {
     fontSize: 30,
     fontWeight: '600',
@@ -30,8 +34,8 @@ export const styles = StyleSheet.create({
     fontSize: 15,
     color: colors.whiteOpacity[60],
   },
-  contentText: {
-    fontSize: 100,
+  tempText: {
+    fontSize: 80,
     color: colors.white,
   },
   contentDesc: {

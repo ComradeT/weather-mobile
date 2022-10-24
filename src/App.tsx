@@ -7,6 +7,7 @@ import { DefaultLayout } from './layouts';
 import colors from './styles/themes/light';
 import { ConditionsEnum, TempEnum, WindDirEnum } from './types';
 import { Toggler } from './ui';
+import { onConvertCelsiusToFahrenheit } from './utils';
 
 const App = () => {
   const [activeTab, setActiveTab] = useState<TempEnum>(TempEnum.CEL);
@@ -15,6 +16,8 @@ const App = () => {
   const onActiveFahrenheit = () => setActiveTab(TempEnum.FAHR);
 
   const { data, isLoading } = useGetWeather();
+
+  const temp = activeTab === TempEnum.CEL ? data?.fact.temp : onConvertCelsiusToFahrenheit(data?.fact.temp);
 
   return (
     <SafeAreaProvider>
@@ -42,9 +45,8 @@ const App = () => {
               </View>
             </View>
 
-            <View>
-              <Text style={styles.contentText}>{data?.fact.temp}º</Text>
-
+            <View style={styles.tempBlock}>
+              <Text style={styles.tempText}>{temp}º</Text>
               <Text style={styles.contentDesc}>{ConditionsEnum[data?.fact.condition]}</Text>
             </View>
 
