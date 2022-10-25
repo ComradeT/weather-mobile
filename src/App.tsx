@@ -3,11 +3,34 @@ import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import useGetWeather from './api';
 import { styles } from './App.styles';
+import { Sun, Cloud, Location, PartlyCloudy, Rain, Strom } from './assets/svgs';
 import { DefaultLayout } from './layouts';
 import colors from './styles/themes/light';
 import { ConditionsEnum, TempEnum, WindDirEnum } from './types';
 import { Toggler } from './ui';
 import { onConvertCelsiusToFahrenheit } from './utils';
+
+const weatherIcons = {
+  clear: <Sun height={150} width={150} />,
+  'partly-cloudy': <PartlyCloudy height={150} width={150} />,
+  cloudy: <Sun height={150} width={150} />,
+  overcast: <Cloud height={150} width={150} />,
+  drizzle: <Rain height={150} width={150} />,
+  'light-rain': <Rain height={150} width={150} />,
+  rain: <Rain height={150} width={150} />,
+  'moderate-rain': <Rain height={150} width={150} />,
+  'heavy-rain': <Rain height={150} width={150} />,
+  'continuous-heavy-rain': <Rain height={150} width={150} />,
+  showers: <Rain height={150} width={150} />,
+  'wet-snow': <Rain height={150} width={150} />,
+  'light-snow': <Rain height={150} width={150} />,
+  snow: <Rain height={150} width={150} />,
+  'snow-showers': <Rain height={150} width={150} />,
+  hail: <Strom height={150} width={150} />,
+  thunderstorm: <Strom height={150} width={150} />,
+  'thunderstorm-with-rain': <Strom height={150} width={150} />,
+  'thunderstorm-with-hail': <Strom height={150} width={150} />,
+};
 
 const App = () => {
   const [activeTab, setActiveTab] = useState<TempEnum>(TempEnum.CEL);
@@ -42,12 +65,18 @@ const App = () => {
                 <TouchableOpacity>
                   <Text style={styles.text}>Сменить город</Text>
                 </TouchableOpacity>
-                <Text style={styles.text}>Мое местоположение</Text>
+                <View style={styles.locationRow}>
+                  <Location />
+                  <Text style={styles.text}>Мое местоположение</Text>
+                </View>
               </View>
             </View>
 
             <View style={styles.tempBlock}>
-              <Text style={styles.tempText}>{temperature}º</Text>
+              <View style={styles.tempRow}>
+                {weatherIcons[data.fact.condition]}
+                <Text style={styles.tempText}>{temperature}º</Text>
+              </View>
               <Text style={styles.contentDesc}>{ConditionsEnum[data.fact.condition]}</Text>
             </View>
 

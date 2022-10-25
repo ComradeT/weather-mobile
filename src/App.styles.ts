@@ -21,9 +21,17 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 18,
   },
+  locationRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   tempBlock: {
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  tempRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   cityTitle: {
     fontSize: 30,

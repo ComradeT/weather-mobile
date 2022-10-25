@@ -1,5 +1,6 @@
 const onConvertCelsiusToFahrenheit = (valNum?: number) => {
-  return valNum && valNum * 1.8 + 32;
+  const newValue = valNum && valNum * 1.8 + 32;
+  return newValue?.toFixed();
 };
 
 export default onConvertCelsiusToFahrenheit;
