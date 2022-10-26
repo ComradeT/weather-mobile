@@ -6,19 +6,20 @@ import styles from './Input.styles';
 type TogglerProps = {
   onChangeText: (text: string) => void;
   onSetIsEndEdditing: () => void;
-  onToggleInput: () => void;
+  onHideInput: () => void;
 };
 
-const Input: FC<TogglerProps> = ({ onChangeText, onSetIsEndEdditing, onToggleInput }) => {
+const Input: FC<TogglerProps> = ({ onChangeText, onSetIsEndEdditing, onHideInput }) => {
   return (
     <View style={styles.root}>
       <TextInput
         onEndEditing={onSetIsEndEdditing}
         onChangeText={onChangeText}
+        onSubmitEditing={onHideInput}
         style={styles.input}
         placeholder="Введите название города"
       />
-      <TouchableOpacity onPress={onToggleInput} style={styles.button}>
+      <TouchableOpacity onPress={onHideInput} style={styles.button}>
         <Text style={styles.text}>OK</Text>
       </TouchableOpacity>
     </View>

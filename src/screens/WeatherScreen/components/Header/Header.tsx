@@ -10,7 +10,7 @@ type HeaderProps = {
   activeTab: TempEnum;
   onActiveСelsius: () => void;
   onActiveFahrenheit: () => void;
-  onToggleInput: () => void;
+  onShowInput: () => void;
   sityName: string;
 };
 
@@ -18,13 +18,15 @@ const Header: FC<HeaderProps> = ({
   activeTab,
   onActiveFahrenheit,
   onActiveСelsius,
-  onToggleInput,
+  onShowInput,
   sityName,
 }) => {
   return (
     <View style={styles.header}>
       <View style={styles.topRow}>
-        <Text style={styles.cityTitle}>{sityName}</Text>
+        <Text style={styles.cityTitle} numberOfLines={1}>
+          {sityName}
+        </Text>
         <Toggler
           activeTab={activeTab}
           onActiveСelsius={onActiveСelsius}
@@ -32,7 +34,7 @@ const Header: FC<HeaderProps> = ({
         />
       </View>
       <View style={styles.topRow}>
-        <TouchableOpacity onPress={onToggleInput}>
+        <TouchableOpacity onPress={onShowInput}>
           <Text style={styles.text}>Сменить город</Text>
         </TouchableOpacity>
         <View style={styles.locationRow}>

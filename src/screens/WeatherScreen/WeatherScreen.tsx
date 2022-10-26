@@ -42,7 +42,7 @@ const WeatherScreen = () => {
   const onActiveСelsius = () => setActiveTab(TempEnum.CEL);
   const onActiveFahrenheit = () => setActiveTab(TempEnum.FAHR);
 
-  const { data } = useGetWeather(cityName, isEndEdditing);
+  const { data, isLoading } = useGetWeather(cityName, isEndEdditing);
 
   const temperature =
     activeTab === TempEnum.CEL ? data?.fact.temp : onConvertCelsiusToFahrenheit(data?.fact.temp);
@@ -53,11 +53,16 @@ const WeatherScreen = () => {
   };
   const onSetIsEndEdditing = () => setIsEndEdditing(true);
 
-  const onToggleInput = () => setIsActiveInput(!isActiveInput);
+  const onShowInput = () => setIsActiveInput(true);
+
+  const onHideInput = () => {
+    setIsEndEdditing(true);
+    setIsActiveInput(false);
+  };
 
   return (
     <DefaultLayout>
-      {!data ? (
+      {!data || isLoading ? (
         <View style={styles.loading}>
           <ActivityIndicator size="large" color={colors.white} />
         </View>
@@ -67,15 +72,15 @@ const WeatherScreen = () => {
             <Input
               onChangeText={onChangeText}
               onSetIsEndEdditing={onSetIsEndEdditing}
-              onToggleInput={onToggleInput}
+              onHideInput={onHideInput}
             />
           ) : (
             <Header
               activeTab={activeTab}
               onActiveFahrenheit={onActiveFahrenheit}
               onActiveСelsius={onActiveСelsius}
-              onToggleInput={onToggleInput}
-              sityName={data.geo_object.locality.name}
+              onShowInput={onShowInput}
+              sityName={data.geo_object.locality ? data.geo_object.locality.name : 'Неопределено'}
             />
           )}
 

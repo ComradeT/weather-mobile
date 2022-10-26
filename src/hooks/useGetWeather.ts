@@ -11,6 +11,8 @@ const GEOCOD_API_URl = 'https://geocode-maps.yandex.ru/1.x/?';
 
 const useGetWeather = (cityName: string | null, isEndEdditing: boolean) => {
   const [data, setData] = useState<WeatherDataType | null>(null);
+  const [cityLocation, setCityLocatin] = useState<string[] | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { getPermissions, getPosition, locationData } = useLocation();
 
@@ -21,29 +23,28 @@ const useGetWeather = (cityName: string | null, isEndEdditing: boolean) => {
         method: 'get',
         url: `${GEOCOD_API_URl}apikey=${GEOCOD_API_KEY}&geocode=${address}&format=json`,
       });
-      console.log(
-        'coords getCoordByName',
-        coords.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos,
-      );
+      const position = coords.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos?.split(' ');
+      setCityLocatin(position);
     } catch (error) {
       console.log('error coords', error);
     }
   };
 
-  const getWeather = async () => {
-    if (locationData) {
-      try {
-        const { data: weather } = await axios({
-          method: 'get',
-          url: `${API_URl}lat=${locationData.lat}&lon=${locationData.long}`,
-          headers: {
-            'X-Yandex-API-Key': API_KEY,
-          },
-        });
-        setData(weather);
-      } catch (error) {
-        console.log('error', error);
-      }
+  const getWeather = async (lat: number, long: number) => {
+    setIsLoading(true);
+    try {
+      const { data: weather } = await axios({
+        method: 'get',
+        url: `${API_URl}lat=${lat}&lon=${long}`,
+        headers: {
+          'X-Yandex-API-Key': API_KEY,
+        },
+      });
+      setData(weather);
+    } catch (error) {
+      console.log('error', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -61,12 +62,16 @@ const useGetWeather = (cityName: string | null, isEndEdditing: boolean) => {
   }, []);
 
   useEffect(() => {
-    locationData && getWeather();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    locationData && getWeather(locationData.lat, locationData.long);
   }, [locationData]);
+
+  useEffect(() => {
+    cityLocation && getWeather(+cityLocation[1], +cityLocation[0]);
+  }, [cityLocation]);
 
   return {
     data,
+    isLoading,
   };
 };
 

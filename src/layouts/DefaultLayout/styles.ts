@@ -5,6 +5,6 @@ export default StyleSheet.create({
   root: {
     backgroundColor: colors.primary,
     flex: 1,
-    paddingHorizontal: 16,
+    paddingHorizontal: 10,
   },
 });

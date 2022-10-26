@@ -17,9 +17,10 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   cityTitle: {
-    fontSize: 30,
+    fontSize: 28,
     fontWeight: '600',
     color: colors.white,
+    width: 200,
   },
   text: {
     fontSize: 15,
