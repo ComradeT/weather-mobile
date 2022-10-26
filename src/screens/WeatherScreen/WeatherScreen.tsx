@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
-import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Text, View } from 'react-native';
 
-import { styles } from './weather-screen.styles';
-import { DefaultLayout } from 'layouts';
-import { Sun, Cloud, Location, PartlyCloudy, Rain, Strom } from 'assets/svgs';
-import { ConditionsEnum, TempEnum, WindDirEnum } from 'types';
+import { Cloud, PartlyCloudy, Rain, Strom, Sun } from 'assets/svgs';
 import { useGetWeather } from 'hooks';
-import { onConvertCelsiusToFahrenheit } from 'utils';
+import { DefaultLayout } from 'layouts';
 import { colors } from 'styles';
-import { Toggler } from 'ui';
+import { ConditionsEnum, TempEnum } from 'types';
+import { Input } from 'ui';
+import { onConvertCelsiusToFahrenheit } from 'utils';
+import { Footer, Header } from './components';
+import { styles } from './weather-screen.styles';
 
 const weatherIcons = {
   clear: <Sun height={150} width={150} />,
   'partly-cloudy': <PartlyCloudy height={150} width={150} />,
-  cloudy: <Sun height={150} width={150} />,
+  cloudy: <PartlyCloudy height={150} width={150} />,
   overcast: <Cloud height={150} width={150} />,
   drizzle: <Rain height={150} width={150} />,
   'light-rain': <Rain height={150} width={150} />,
@@ -34,14 +35,25 @@ const weatherIcons = {
 
 const WeatherScreen = () => {
   const [activeTab, setActiveTab] = useState<TempEnum>(TempEnum.CEL);
+  const [cityName, setCityName] = useState<string | null>(null);
+  const [isEndEdditing, setIsEndEdditing] = useState(false);
+  const [isActiveInput, setIsActiveInput] = useState(false);
 
   const onActiveСelsius = () => setActiveTab(TempEnum.CEL);
   const onActiveFahrenheit = () => setActiveTab(TempEnum.FAHR);
 
-  const { data } = useGetWeather();
+  const { data } = useGetWeather(cityName, isEndEdditing);
 
   const temperature =
     activeTab === TempEnum.CEL ? data?.fact.temp : onConvertCelsiusToFahrenheit(data?.fact.temp);
+
+  const onChangeText = (text: string) => {
+    setIsEndEdditing(false);
+    setCityName(text);
+  };
+  const onSetIsEndEdditing = () => setIsEndEdditing(true);
+
+  const onToggleInput = () => setIsActiveInput(!isActiveInput);
 
   return (
     <DefaultLayout>
@@ -51,25 +63,21 @@ const WeatherScreen = () => {
         </View>
       ) : (
         <View style={styles.root}>
-          <View style={styles.header}>
-            <View style={styles.topRow}>
-              <Text style={styles.cityTitle}>{data.geo_object.locality.name}</Text>
-              <Toggler
-                activeTab={activeTab}
-                onActiveСelsius={onActiveСelsius}
-                onActiveFahrenheit={onActiveFahrenheit}
-              />
-            </View>
-            <View style={styles.topRow}>
-              <TouchableOpacity>
-                <Text style={styles.text}>Сменить город</Text>
-              </TouchableOpacity>
-              <View style={styles.locationRow}>
-                <Location />
-                <Text style={styles.text}>Мое местоположение</Text>
-              </View>
-            </View>
-          </View>
+          {isActiveInput ? (
+            <Input
+              onChangeText={onChangeText}
+              onSetIsEndEdditing={onSetIsEndEdditing}
+              onToggleInput={onToggleInput}
+            />
+          ) : (
+            <Header
+              activeTab={activeTab}
+              onActiveFahrenheit={onActiveFahrenheit}
+              onActiveСelsius={onActiveСelsius}
+              onToggleInput={onToggleInput}
+              sityName={data.geo_object.locality.name}
+            />
+          )}
 
           <View style={styles.tempBlock}>
             <View style={styles.tempRow}>
@@ -79,26 +87,13 @@ const WeatherScreen = () => {
             <Text style={styles.contentDesc}>{ConditionsEnum[data.fact.condition]}</Text>
           </View>
 
-          <View style={styles.footer}>
-            <View style={styles.parameterItem}>
-              <Text style={styles.text}>Ветер</Text>
-              <Text style={styles.contentDesc}>
-                {data.fact.wind_speed} м/c, {WindDirEnum[data.fact.wind_dir]}
-              </Text>
-            </View>
-            <View style={styles.parameterItem}>
-              <Text style={styles.text}>Давление</Text>
-              <Text style={styles.contentDesc}>{data.fact.pressure_mm} мм рт. ст.</Text>
-            </View>
-            <View style={styles.parameterItem}>
-              <Text style={styles.text}>Влажность</Text>
-              <Text style={styles.contentDesc}>{data.fact.humidity}%</Text>
-            </View>
-            <View style={styles.parameterItem}>
-              <Text style={styles.text}>Вероятность дождя</Text>
-              <Text style={styles.contentDesc}>{data.fact.prec_strength! * 100}%</Text>
-            </View>
-          </View>
+          <Footer
+            humidity={data.fact.humidity}
+            precStrength={data.fact.prec_strength}
+            pressure={data.fact.pressure_mm}
+            windDir={data.fact.wind_dir}
+            windSpeed={data.fact.wind_speed}
+          />
         </View>
       )}
     </DefaultLayout>

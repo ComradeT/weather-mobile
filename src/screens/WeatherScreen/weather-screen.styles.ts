@@ -12,19 +12,6 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  header: {
-    width: '100%',
-  },
-  topRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 18,
-  },
-  locationRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
   tempBlock: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -32,11 +19,6 @@ export const styles = StyleSheet.create({
   tempRow: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  cityTitle: {
-    fontSize: 30,
-    fontWeight: '600',
-    color: colors.white,
   },
   text: {
     fontSize: 15,
@@ -49,14 +31,5 @@ export const styles = StyleSheet.create({
   contentDesc: {
     fontSize: 15,
     color: colors.white,
-  },
-  footer: {
-    width: '100%',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
-  parameterItem: {
-    width: '50%',
-    marginBottom: 35,
   },
 });
